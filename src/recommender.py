@@ -199,9 +199,9 @@ def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, str]:
     Scores a song based on user preferences using point-based system.
     
     Scoring Rules:
-    - Genre match: +2.0 points
+    - Genre match: +1.0 point Modified from original 2.0 to balance with other factors
     - Mood match: +1.0 point
-    - Energy distance: 0-3.0 points based on proximity
+    - Energy distance: 0-6.0 points based on proximity modified from original 0-5.0 to give more weight to energy matching
     - Valence match: +1.0 point (if applicable)
     - Acousticness match: +0.5 points (if applicable)
     
@@ -211,10 +211,10 @@ def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, str]:
     score = 0.0
     breakdown = []
     
-    # 1. Genre Matching: +2.0
+    # 1. Genre Matching: +1.0
     if user_prefs['favorite_genre'] == song['genre']:
-        score += 2.0
-        breakdown.append(f"✓ Genre match ('{song['genre']}') +2.0")
+        score += 1.0
+        breakdown.append(f"✓ Genre match ('{song['genre']}') +1.0")
     else:
         breakdown.append(f"✗ Genre mismatch (user: '{user_prefs['favorite_genre']}', song: '{song['genre']}')")
     
@@ -225,17 +225,17 @@ def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, str]:
     else:
         breakdown.append(f"✗ Mood mismatch (user: '{user_prefs['favorite_mood']}', song: '{song['mood']}')")
     
-    # 3. Energy Distance: 0-3.0 based on proximity to target
+    # 3. Energy Distance: 0-6.0 based on proximity to target
     energy_diff = abs(user_prefs['target_energy'] - song['energy'])
     
     if energy_diff <= 0.05:
-        energy_points = 3.0
+        energy_points = 6.0
         energy_reason = "very close (±0.05)"
     elif energy_diff <= 0.15:
-        energy_points = 2.0
+        energy_points = 4.0
         energy_reason = "close (±0.15)"
     elif energy_diff <= 0.30:
-        energy_points = 1.0
+        energy_points = 2.0
         energy_reason = "acceptable (±0.30)"
     else:
         energy_points = 0.0

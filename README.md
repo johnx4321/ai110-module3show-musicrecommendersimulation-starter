@@ -147,40 +147,40 @@ You can add more tests in `tests/test_recommender.py`.
 
 ---
 
+## Diverse Profile Output
+
+![Output2](./output2.png)
+![Output3](./output3.png)
+![Output4](./output4.png)
+![Output5](./output5.png)
+
 ## Experiments You Tried
 
 Use this section to document the experiments you ran. For example:
 
 - What happened when you changed the weight on genre from 2.0 to 0.5
+The system became less focused on genre and more influenced by mood and energy, resulting in more diverse recommendations that sometimes included songs from different genres but with similar moods or energy levels. This made the recommendations feel more varied and less predictable, which could be a positive for users looking to discover new music, but might also lead to less satisfaction for users who strongly prefer certain genres.
 - What happened when you added tempo or valence to the score
+Adding tempo and valence to the scoring system made the recommendations more nuanced, as it allowed the system to consider not just the genre and mood but also the energy and emotional tone of the songs. This led to recommendations that better matched the user's overall vibe, such as suggesting more upbeat songs for users who prefer high valence or slower songs for those who prefer low tempo. However, it also made the scoring more complex and could potentially dilute the influence of genre and mood if not weighted properly.
 - How did your system behave for different types of users
+For users with strong preferences for specific genres and moods, the system tended to recommend songs that closely matched those preferences, resulting in high scores for those songs. For users with more balanced or less defined preferences, the recommendations were more varied and sometimes included songs that didn't perfectly match any single preference but still scored well overall. This highlighted the importance of weighting different features appropriately to ensure that the recommendations felt relevant and satisfying for a wide range of user profiles.
 
 ---
 
 ## Limitations and Risks
 
-Summarize some limitations of your recommender.
+MuRec 1.0 operates on only 18 songs with heavy electronic/high-energy bias. It ignores tempo, danceability, and lyrics; energy now dominates scoring (71% of max), which can override genre preferences; hard thresholds create cliff effects. Low-energy and classical users are systematically disadvantaged.
 
-Examples:
+**Full analysis: See [Model Card](model_card.md)** for detailed bias, representation gaps, and fairness issues.
 
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
-
-You will go deeper on this in your model card.
 
 ---
 
 ## Reflection
 
-Read and complete `model_card.md`:
+**See [Model Card](model_card.md) Section 9 for full personal reflection.**
 
-[**Model Card**](model_card.md)
-
-Write 1 to 2 paragraphs here about what you learned:
-
-- about how recommenders turn data into predictions
-- about where bias or unfairness could show up in systems like this
+Key takeaway: Recommender systems encode policy decisions. Weighting choices, threshold boundaries, and dataset composition create systematic winners and losers among user groups. What feels like objective "recommendations" often reflects the designer's priorities—fairness must be intentional, not accidental.
 
 
 ---
