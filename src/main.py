@@ -10,6 +10,7 @@ You will implement the functions in recommender.py:
 """
 
 from .recommender import load_songs, recommend_songs
+from tabulate import tabulate
 
 
 def print_recommendations(user_name: str, user_prefs: dict, songs: list, k: int = 3) -> None:
@@ -72,7 +73,33 @@ def main() -> None:
     
     # Print recommendations for each user profile
     for user_name, user_prefs in users.items():
-        print_recommendations(user_name, user_prefs, songs, k=3)
+        recommendations = recommend_songs(user_prefs, songs, k=3)
+        
+        print("\n" + "=" * 70)
+        print(f"🎵 {user_name.upper()}")
+        print("=" * 70)
+        print(f"\nUser Preferences: {user_prefs['favorite_genre']} | {user_prefs['favorite_mood']} | Energy: {user_prefs['target_energy']}\n")
+        
+        table_data = []
+        for i, (song, score, explanation) in enumerate(recommendations, 1):
+            table_data.append([
+                i,
+                song['title'],
+                song['artist'],
+                song['genre'],
+                f"{score:.1f}/7.5",
+                explanation.replace("\n", " ")
+            ])
+        
+        print(tabulate(
+            table_data,
+            headers=["#", "Title", "Artist", "Genre", "Score", "Reason"],
+            tablefmt="grid",
+            maxcolwidths=[3, 20, 15, 10, 10, 30]
+        ))
+        print("=" * 70)
+    
+    print("\n✅ Recommendation simulation complete!\n")
     
     print("\n" + "=" * 70)
     print("✅ Recommendation simulation complete!")
